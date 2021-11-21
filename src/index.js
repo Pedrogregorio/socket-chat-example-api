@@ -1,16 +1,24 @@
-import bodyParser from 'body-parser';
-import express from 'express';
-import cors from 'cors';
+import express from "express";
+import cors from "cors";
+import { createServer } from "http";
+import socket from "socket.io";
 
 const app = express();
+app.use(cors());
+const httpServer = createServer(app);
+const io = socket(httpServer, {
+    cors: {
+        origin: "*"
+    },
+});
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-})
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(cors())
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => { console.log(`Listening on port ${port}`); });
+
+httpServer.listen(port, () => console.log(`listening on port ${port}`));
