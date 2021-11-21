@@ -6,11 +6,7 @@ import socket from "socket.io";
 const app = express();
 app.use(cors());
 const httpServer = createServer(app);
-const io = socket(httpServer, {
-    cors: {
-        origin: "*"
-    },
-});
+const io = socket(httpServer, { cors: { origin: "*" }});
 
 io.on("connection", (socket) => {
   console.log("a user connected");
