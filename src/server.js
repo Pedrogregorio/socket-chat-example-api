@@ -6,7 +6,12 @@ import socket from "socket.io";
 const app = express();
 app.use(cors());
 const httpServer = createServer(app);
-const io = socket(httpServer, { cors: { origin: "*" }});
+const io = require("socket.io")(httpServer, {
+  cors: {
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST"],
+  }
+});
 
 export {
   httpServer,
