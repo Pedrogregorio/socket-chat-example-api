@@ -18,10 +18,7 @@ io.on("connection", (socket) => {
     callback(messagesInRoom);
   })
   socket.on("send_message", (data) => {
-    messages.push({
-      ...data,
-      createdAt: new Date().toLocaleString()
-    })
+    messages.push(data)
     io.to(data.room).emit("receive_message", data);
   });
 });
